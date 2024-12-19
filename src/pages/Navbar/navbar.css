@@ -1,0 +1,102 @@
+/* Styles généraux */
+nav {
+    background-color: #333; /* Fond sombre */
+    color: #fff; /* Texte en blanc */
+    padding: 10px 20px; /* Espacement interne */
+    font-family: Arial, sans-serif;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .container-nav {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .logo img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  /* Menu de navigation principal */
+  .menu ul {
+    display: flex;
+    justify-content: end;
+    gap: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .menu .nav-link a {
+    text-decoration: none;
+    color: #d9d9d9;
+    transition: color 0.3s ease;
+    font-size: 16px;
+  }
+  
+  .menu .nav-link a:hover {
+    color: #f4f4f4; /* Couleur plus claire au survol */
+  }
+  
+  /* Icône du menu mobile */
+  .menu-mobile .ico-menu {
+    display: none; /* Caché par défaut */
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+  }
+  
+  .menu-mobile ul {
+    display: none; /* Caché par défaut */
+    flex-direction: column;
+    gap: 10px;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background-color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    padding: 10px 20px;
+    list-style: none;
+  }
+  
+  .menu-mobile ul .nav-link a {
+    text-decoration: none;
+    color: #d9d9d9;
+    transition: color 0.3s ease;
+  }
+  
+  .menu-mobile ul .nav-link a:hover {
+    color: #fff;
+  }
+  
+  /* Afficher le menu mobile */
+  .menu-mobile.show-mobile ul {
+    display: flex;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .menu {
+      display: none; /* Cacher le menu principal */
+    }
+  
+    .menu-mobile .ico-menu {
+      display: block; /* Afficher l'icône menu */
+    }
+  }
+  
