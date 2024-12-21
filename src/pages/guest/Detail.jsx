@@ -1,100 +1,120 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 import "./productDetails.css";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import image from "./../../Assets/images/produit.png";
+import { FaVideo } from "react-icons/fa"; // Importation des icônes
 
 const Detail = () => {
-  // Données fictives
-  const product = {
-    id: 1,
-    name: "Montre Intelligente X200",
-    description:
-      "Une montre connectée moderne avec des fonctionnalités avancées pour suivre votre santé et votre style de vie.",
-    price: 199.99,
-    images: [
-      "https://via.placeholder.com/400x300?text=Image+1",
-      "https://via.placeholder.com/400x300?text=Image+2",
-      "https://via.placeholder.com/400x300?text=Image+3",
-    ],
-    features: [
-      "Écran AMOLED 1.5 pouces",
-      "Suivi de la fréquence cardiaque 24/7",
-      "Autonomie de 7 jours",
-      "Résistance à l'eau 5 ATM",
-    ],
-    reviews: [
-      {
-        id: 1,
-        user: "Alice",
-        rating: 5,
-        comment: "Excellent produit, très pratique !",
-      },
-      { id: 2, user: "Bob", rating: 4, comment: "Bon rapport qualité-prix." },
-    ],
-    recommendations: [
-      { id: 2, name: "Montre Intelligente X300", price: 249.99 },
-      { id: 3, name: "Bracelet Connecté Y100", price: 99.99 },
-    ],
-  };
+  const { id } = useParams(); // Récupérer l'ID depuis l'URL
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Charger les détails du produit depuis l'API
+    const fetchProductDetails = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/detail_produit/${id}`
+        );
+        setProduct(response.data);
+      } catch (error) {
+        console.error("Erreur lors du chargement du produit :", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductDetails();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <p className="loading-message">Chargement des détails du produit...</p>
+    );
+  }
+
+  if (!product) {
+    return <p className="error-message">Produit introuvable.</p>;
+  }
+
+  // Produits similaires fictifs
+  const similarProducts = [
+    { id: 2, name: "suggestion", price: 120.99, image: image },
+    { id: 3, name: "suggestion", price: 89.99, image: image },
+    { id: 4, name: "suggestion", price: 150.0, image: image },
+  ];
 
   return (
     <>
-    <Sidebar/>
-    <div className="product-detail-container">
-        
-      {/* Titre */}
-      <h1 className="product-title">{product.name}</h1>
+      <Sidebar />
+      <div className="product-detail-container">
+        {/* Titre */}
+        <h1 className="product-title">
+          {product.nom_produit || "Nom du produit indisponible"}
+        </h1>
 
-      {/* Carrousel d'images */}
-      <div className="product-images">
-        {product.images.map((image, index) => (
+        {/* Image */}
+        <div className="product-images">
           <img
-            key={index}
-            src={image}
-            alt={`Produit ${index + 1}`}
+            src={
+              product.image !== "pas d'image" && product.image
+                ? product.image
+                : image
+            }
+            alt={product.nom_produit || "Produit"}
             className="product-image"
           />
-        ))}
-      </div>
+        </div>
 
-      {/* Description et Prix */}
-      <p className="product-description">{product.description}</p>
-      <h2 className="product-price">${product.price.toFixed(2)}</h2>
+        {/* Description et Prix */}
+        <p className="product-description">
+          {product.descriptions || "Aucune description disponible"}
+        </p>
+        <h2 className="product-price">
+          {product.prix ? `${product.prix} €` : "Prix non disponible"}
+        </h2>
 
-      {/* Fonctionnalités */}
-      <h3 className="section-title">Caractéristiques :</h3>
-      <ul className="product-features">
-        {product.features.map((feature, index) => (
-          <li key={index} className="feature-item">
-            {feature}
-          </li>
-        ))}
-      </ul>
+        {/* Bouton Commander */}
+        <button className="order-button">Commander Maintenant</button>
+        <button className="btn video-calls botos">
+          <FaVideo className="icone" />
+        </button>
 
-      {/* Avis */}
-      <h3 className="section-title">Avis :</h3>
-      {product.reviews.length > 0 ? (
-        <ul className="product-reviews">
-          {product.reviews.map((review) => (
-            <li key={review.id} className="review-item">
-              <strong>{review.user}</strong> ({review.rating}/5) :{" "}
-              {review.comment}
-            </li>
+        {/* Quantité */}
+        <p className="product-quantity">
+          <strong>Quantité disponible :</strong>{" "}
+          {product.quantite || "Non spécifiée"}
+        </p>
+
+        {/* Type */}
+        <p className="product-type">
+          <strong>Type :</strong> {product.type || "Non spécifié"}
+        </p>
+
+        {/* Statut */}
+        <p className="product-status">
+          <strong>Statut :</strong> {product.status || "Non spécifié"}
+        </p>
+
+        {/* Produits Similaires */}
+        <h3 className="section-title">Produits Similaires :</h3>
+        <div className="similar-products">
+          {similarProducts.map((simProd) => (
+            <div key={simProd.id} className="similar-product-item">
+              <img
+                src={simProd.image}
+                alt={simProd.name}
+                className="similar-product-image"
+              />
+              <h4>{simProd.name}</h4>
+              <p>{simProd.price.toFixed(2)} €</p>
+              <button className="view-button">Voir</button>
+            </div>
           ))}
-        </ul>
-      ) : (
-        <p className="no-reviews">Aucun avis pour le moment.</p>
-      )}
-
-      {/* Recommandations */}
-      <h3 className="section-title">Produits Recommandés :</h3>
-      <ul className="product-recommendations">
-        {product.recommendations.map((rec) => (
-          <li key={rec.id} className="recommendation-item">
-            {rec.name} - ${rec.price.toFixed(2)}
-          </li>
-        ))}
-      </ul>
-    </div>
+        </div>
+      </div>
     </>
   );
 };

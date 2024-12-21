@@ -27,7 +27,7 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="list-categorie" element={<ListCategorie />} />
           <Route path="list-produit" element={<ListProduit />} />
-          <Route path="details" element={< Detail/>} />
+          <Route path="details/:id" element={< Detail/>} />
 
         </Route>
       </Routes>

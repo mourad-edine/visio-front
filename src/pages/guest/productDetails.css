@@ -9,7 +9,7 @@
   }
   
   .product-title {
-    font-size: 2em;
+    font-size: 18px;
     margin-bottom: 20px;
     color: #333;
   }
@@ -69,5 +69,132 @@
   
   .review-item strong {
     color: #000;
+  }
+  
+
+  .product-detail-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .product-title {
+    font-size: 18px;
+    border-bottom: 1px solid #000;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .product-images {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .product-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .product-description {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    line-height: 1.6;
+    color: #555;
+  }
+  
+  .product-price {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 20px;
+  }
+  
+  .order-button {
+
+    padding: 15px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 20px;
+    text-align: start;
+    transition: background-color 0.3s;
+  }
+
+  .video-calls.botos{
+    padding: 15px;
+    background: #000;
+    margin-left: 3px;
+  }
+  
+  .order-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .product-quantity,
+  .product-type,
+  .product-status {
+    margin-bottom: 10px;
+    font-size: 1rem;
+  }
+  
+  .section-title {
+    font-size: 18px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #000;
+    color: #333;
+  }
+  
+  .similar-products {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .similar-product-item {
+    width: 200px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    transition: box-shadow 0.3s;
+  }
+  
+  .similar-product-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .similar-product-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .view-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .view-button:hover {
+    background-color: #218838;
+  }
+  
+  .loading-message,
+  .error-message {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 50px;
   }
   
