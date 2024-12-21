@@ -16,7 +16,7 @@ const Login = () => {
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     if (userId) {
-      navigate("/dashboard"); // Redirige vers la page principale si déjà connecté
+      navigate("/home"); // Redirige vers la page principale si déjà connecté
     }
   }, [navigate]);
 
@@ -34,9 +34,12 @@ const Login = () => {
       console.log(response);
       
       if (response.data.result === "ok") {
-        const userId = response.data.user.id;
-        localStorage.setItem("userId", userId);
         toast.success("Connexion réussie !");
+
+        const userId = response.data.user.id;
+        const usertype = response.data.user.type;
+        localStorage.setItem("userId", userId);
+        localStorage.setItem("type", usertype)
         navigate("/home");
       } else {
         toast.error(response.data.message || "Email ou mot de passe incorrect.");

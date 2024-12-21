@@ -18,7 +18,7 @@ const Register = () => {
   useEffect(() => {
       const userId = localStorage.getItem("userId");
       if (userId) {
-        navigate("/dashboard"); // Redirige vers la page principale si déjà connecté
+        navigate("/home"); // Redirige vers la page principale si déjà connecté
       }
     }, [navigate]);
 

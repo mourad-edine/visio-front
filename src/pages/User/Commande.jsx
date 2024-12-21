@@ -1,16 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./commande.css";
 
 const Commande = () => {
-  // Exemple de données fictives pour les commandes
-  const [orders, setOrders] = useState([
-    { id: 1, name: "Ordinateur Portable", price: 1200, quantity: 1 },
-    { id: 2, name: "Chaussures de Sport", price: 85, quantity: 2 },
-    { id: 3, name: "Montre Connectée", price: 199, quantity: 1 },
-    { id: 4, name: "Casque Audio", price: 99, quantity: 1 },
-  ]);
+  const [orders, setOrders] = useState([]);
 
-  // Fonction pour supprimer un produit
+  // Charger les données de l'API
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/api/panier_all");
+        const produitsResponse = await axios.get("http://localhost:8000/api/produit_all");
+        const produits = produitsResponse.data;
+
+        // Ajouter les détails des produits à chaque commande
+        const ordersWithDetails = response.data.map((order) => {
+          const produit = produits.find((p) => p.id === order.produit_id);
+          return {
+            id: order.id,
+            name: produit ? produit.nom_produit : "Produit inconnu",
+            price: produit ? produit.prix : 0,
+            quantity: order.quantite,
+          };
+        });
+
+        setOrders(ordersWithDetails);
+      } catch (error) {
+        console.error("Erreur lors du chargement des commandes :", error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  // Fonction pour supprimer une commande
   const handleRemove = (id) => {
     setOrders((prevOrders) => prevOrders.filter((order) => order.id !== id));
   };
@@ -43,7 +66,10 @@ const Commande = () => {
                   <td>{order.quantity}</td>
                   <td>{order.price * order.quantity} €</td>
                   <td>
-                    <button onClick={() => handleRemove(order.id)} className="remove-btn">
+                    <button
+                      onClick={() => handleRemove(order.id)}
+                      className="remove-btn"
+                    >
                       Supprimer
                     </button>
                   </td>

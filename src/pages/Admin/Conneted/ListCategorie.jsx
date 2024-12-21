@@ -3,6 +3,7 @@ import "./Dashboard.css";
 import "./modal.css";
 import AdminSidebar from "../AdminSidebar";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify"; // Pour afficher des messages toast
 
 const ListCategorie = () => {
   const [categories, setCategories] = useState([]);
@@ -60,6 +61,8 @@ const ListCategorie = () => {
         "http://localhost:8000/api/create_categorie",
         data
       );
+            toast.success("produit ajouté avec success.");
+      
       setCategories((prevCategories) => [...prevCategories, response.data]);
       setShowModal(false);
       setNewCategorie({ nom_categorie: "", description: "", catalogue_id: "" });
@@ -82,6 +85,7 @@ const ListCategorie = () => {
   return (
     <div className="dashboard-container">
       <AdminSidebar />
+      <ToastContainer position="top-right" autoClose={3000} />
 
       <main className="main-content">
         <h3>Liste des Catégories</h3>

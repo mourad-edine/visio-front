@@ -35,8 +35,9 @@ const Home = () => {
 
   const handleAddToCart = (product) => {
     const user = localStorage.getItem("userId");
-    if (!user) {
-      toast.error("vous devez vous connecter pour pouvoir commander");
+
+    if (!user || user === "null") {
+      toast.error("Vous devez vous connecter pour pouvoir commander");
     } else {
       setSelectedProduct(product);
       setShowModal(true);
@@ -52,22 +53,20 @@ const Home = () => {
     if (!selectedProduct) return;
 
     const orderData = {
-      produit_id: selectedProduct.id,
+      product_id: selectedProduct.id,
       quantity,
-      user_id : localStorage.getItem("userId")
-      
     };
 
     try {
-      await axios.post("http://localhost:8000/api/create_panier", orderData);
-      toast.success('ajouté au panier')
+      await axios.post("http://localhost:8000/api/commande", orderData);
+      alert("commande passé avec success !");
       console.log(orderData);
       handleModalClose();
     } catch (error) {
       console.error("Erreur lors de l'envoi de la commande :", error);
       console.log("data :", orderData);
 
-      toast.success('une erreur est survenur , veuiller réessayer ! ')
+      alert("erreur lors de l envoie !");
     }
   };
 
@@ -78,43 +77,31 @@ const Home = () => {
       {/* Liste des produits avec scroll */}
       <ToastContainer position="top-right" autoClose={3000} />
       <div className="product-grid">
-        {Array.isArray(products) && products.length > 0 ? (
-          products.map((product) => (
-            <div className="product-card" key={product.id}>
-              {/* Vérification de l'image */}
-              <img
-                src={
-                  product.image && product.image !== "pas d'image"
-                    ? product.image
-                    : image
-                }
-                alt={product.nom_produit || "Produit"}
-              />
-              <h4>{product.nom_produit || "Nom indisponible"}</h4>
-              <p>{product.descriptions || "Pas de description disponible"}</p>
-              <span className="price">{product.prix} €</span>
-              <div className="card-buttons">
-                <button
-                  className="btn add-to-cart"
-                  onClick={() => handleAddToCart(product)}
-                >
-                  <FaShoppingCart />
-                </button>
-                <button
-                  className="btn details"
-                  onClick={() => navigate(`/details/${product.id}`)}
-                >
-                  <FaInfoCircle /> Détails
-                </button>
-                <button className="btn video-call boto">
-                  <FaVideo className="icone" />
-                </button>
-              </div>
+        {products.map((product) => (
+          <div className="product-card" key={product.id}>
+            <img src={image} alt={product.name} />
+            <h4>{product.nom_produit}</h4>
+            <p>{product.descriptions}</p>
+            <span className="price">{product.prix} €</span>
+            <div className="card-buttons">
+              <button
+                className="btn add-to-cart"
+                onClick={() => handleAddToCart(product)}
+              >
+                <FaShoppingCart />
+              </button>
+              <button
+                className="btn details"
+                onClick={() => navigate(`/details/${product.id}`)}
+              >
+                <FaInfoCircle /> Détails
+              </button>
+              <button className="btn video-call boto">
+                <FaVideo className="icone" />
+              </button>
             </div>
-          ))
-        ) : (
-          <p>Aucun produit disponible</p>
-        )}
+          </div>
+        ))}
       </div>
 
       {/* Modal */}

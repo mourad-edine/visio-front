@@ -3,6 +3,7 @@ import "./Dashboard.css";
 import "./modal.css";
 import AdminSidebar from "../AdminSidebar";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify"; // Pour afficher des messages toast
 
 const ListProduit = () => {
   const [produits, setProduits] = useState([]);
@@ -25,7 +26,7 @@ const ListProduit = () => {
           axios.get("http://localhost:8000/api/produit_all"),
           axios.get("http://localhost:8000/api/liste_categorie"),
         ]);
-        setProduits(produitRes.data); // Pas besoin de .data[0]
+        setProduits(produitRes.data);
         setCategories(categorieRes.data);
       } catch (error) {
         console.error("Erreur lors du chargement des données:", error);
@@ -48,6 +49,7 @@ const ListProduit = () => {
         "http://localhost:8000/api/create_produit",
         newProduit
       );
+      toast.success("produit ajouté avec success.");
       setProduits((prevProduits) => [...prevProduits, response.data]);
       setShowModal(false);
       setNewProduit({
@@ -59,6 +61,7 @@ const ListProduit = () => {
         user_id: localStorage.getItem("userId"),
       });
     } catch (error) {
+      console.log(newProduit);
       console.error("Erreur lors de l'ajout du produit:", error);
     }
   };
@@ -77,6 +80,8 @@ const ListProduit = () => {
   return (
     <div className="dashboard-container">
       <AdminSidebar />
+      <ToastContainer position="top-right" autoClose={3000} />
+
       <main className="main-content">
         <h3>Liste des produits</h3>
         <button className="btnq btn-add" onClick={() => setShowModal(true)}>
@@ -98,11 +103,11 @@ const ListProduit = () => {
             {produits.map((produit) => (
               <tr key={produit.id}>
                 <td>{produit.id}</td>
-                <td>{produit.nom_produit || "Non spécifié"}</td>
+                <td>{produit.nom_produit}</td>
                 <td>{produit.descriptions}</td>
                 <td>{produit.prix} €</td>
                 <td>{produit.quantite}</td>
-                <td>{categories.find(cat => cat.id === produit.categorie_id)?.nom_categorie || "Inconnue"}</td>
+                <td>{produit.categorie_id}</td>
                 <td>
                   <button className="btn btn-edit">Modifier</button>
                   <button
@@ -175,10 +180,7 @@ const ListProduit = () => {
               </div>
             </div>
             <div className="modal-buttons">
-              <button
-                className="btn btn-confirm"
-                onClick={handleAddProduit}
-              >
+              <button className="btn btn-confirm" onClick={handleAddProduit}>
                 Ajouter
               </button>
               <button

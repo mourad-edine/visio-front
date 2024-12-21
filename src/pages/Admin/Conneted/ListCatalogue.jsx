@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 import "./modal.css";
+import { toast, ToastContainer } from "react-toastify"; // Pour afficher des messages toast
 
 import AdminSidebar from "../AdminSidebar";
 import axios from "axios";
@@ -44,6 +45,8 @@ const ListCatalogue = () => {
         "http://localhost:8000/api/create_catalogue",
         newCatalogue
       );
+                  toast.success("produit ajouté avec success.");
+      
       setCatalogues((prevCatalogues) => [...prevCatalogues, response.data]);
       setShowModal(false);
       setNewCatalogue({ nom: "", description: "", reference: "" });
@@ -67,6 +70,7 @@ const ListCatalogue = () => {
     <div className="dashboard-container">
       {/* Sidebar */}
       <AdminSidebar />
+      <ToastContainer position="top-right" autoClose={3000} />
 
       {/* Contenu principal */}
       <main className="main-content">
@@ -117,7 +121,7 @@ const ListCatalogue = () => {
                 <input
                   type="text"
                   name="nom"
-                  value={newCatalogue.nom}
+                  value={newCatalogue.nom_produit}
                   onChange={handleInputChange}
                 />
               </div>
