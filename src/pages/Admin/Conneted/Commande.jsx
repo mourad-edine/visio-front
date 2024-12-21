@@ -2,7 +2,7 @@ import React from 'react';
 import './Dashboard.css';
 import AdminSidebar from '../AdminSidebar';
 
-const Dashboard = () => {
+const CommandeAdmin = () => {
   return (
     <div className="dashboard-container">
       {/* Sidebar */}
@@ -10,7 +10,7 @@ const Dashboard = () => {
 
       {/* Contenu principal */}
       <main className="main-content">
-        <h3>Dashboard</h3>
+        <h3>Listes des commandes</h3>
         <table className="table-liste">
           <thead>
             <tr>
@@ -46,6 +46,6 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default CommandeAdmin;
 
 

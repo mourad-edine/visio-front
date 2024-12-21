@@ -1,33 +1,21 @@
 import React, { useEffect, useState } from "react";
 import "./navbar.css";
 import logo from "../../Assets/images/logo.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import menu from "../../Assets/Icons/menu-nav.png";
 
 const Navbar = () => {
   const [showMobile, setShowMobile] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate(); // Hook pour la navigation
 
+  // Vérification de la présence d'un utilisateur dans le localStorage
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (showMobile && !event.target.closest(".menu-mobile")) {
-        setShowMobile(false);
-      }
-    };
-
-    const handleScroll = () => {
-      if (showMobile) {
-        setShowMobile(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      window.addEventListener("scroll", handleScroll);
-    };
-  }, [showMobile]);
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const toggleMenu = () => {
     setShowMobile(!showMobile);
@@ -35,6 +23,13 @@ const Navbar = () => {
 
   const closeMobileMenu = () => {
     setShowMobile(false);
+  };
+
+  // Fonction de déconnexion avec redirection
+  const handleLogout = () => {
+    localStorage.removeItem("userId"); // Supprimer l'ID de l'utilisateur du localStorage
+    setIsLoggedIn(false); // Mettre à jour l'état de la connexion
+    navigate("/login"); // Rediriger vers la page de login après déconnexion
   };
 
   return (
@@ -49,18 +44,30 @@ const Navbar = () => {
               <li className="nav-link">
                 <NavLink to="home">Home</NavLink>
               </li>
-              <li className="nav-link">
+              
+
+              {/* Afficher login et register si l'utilisateur n'est pas connecté */}
+              {!isLoggedIn ? (
+                <>
+                <li className="nav-link">
                 <NavLink to="about">A propos?</NavLink>
               </li>
-              <li className="nav-link">
-                <NavLink to="login">login</NavLink>
-              </li>
-              <li className="nav-link">
-                <NavLink to="register">register</NavLink>
-              </li>
-              
+                  <li className="nav-link">
+                    <NavLink to="login">Login</NavLink>
+                  </li>
+                  <li className="nav-link">
+                    <NavLink to="register">Register</NavLink>
+                  </li>
+                </>
+              ) : (
+                // Afficher logout si l'utilisateur est connecté
+                <li className="nav-link">
+                  <button onClick={handleLogout}>Logout</button>
+                </li>
+              )}
             </ul>
           </div>
+
           <div className={`menu-mobile show-mobile`}>
             <img
               src={menu}
@@ -75,11 +82,31 @@ const Navbar = () => {
                     Home
                   </NavLink>
                 </li>
-                <li className="nav-link">
-                  <NavLink to="about" onClick={closeMobileMenu}>
-                    A propos ?
-                  </NavLink>
-                </li>
+
+                {/* Afficher login et register ou logout */}
+                {!isLoggedIn ? (
+                  <>
+                    <li className="nav-link">
+                      <NavLink to="about" onClick={closeMobileMenu}>
+                        A propos ?
+                      </NavLink>
+                    </li>
+                    <li className="nav-link">
+                      <NavLink to="login" onClick={closeMobileMenu}>
+                        Login
+                      </NavLink>
+                    </li>
+                    <li className="nav-link">
+                      <NavLink to="register" onClick={closeMobileMenu}>
+                        Register
+                      </NavLink>
+                    </li>
+                  </>
+                ) : (
+                  <li className="nav-link">
+                    <button onClick={handleLogout}>Logout</button>
+                  </li>
+                )}
               </ul>
             )}
           </div>

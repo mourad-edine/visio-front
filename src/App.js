@@ -12,6 +12,8 @@ import Dashboard from "./pages/Admin/Conneted/Dashboard.jsx";
 import ListCategorie from "./pages/Admin/Conneted/ListCategorie.jsx";
 import ListProduit from "./pages/Admin/Conneted/ListProduit.jsx";
 import Detail from "./pages/guest/Detail.jsx";
+import CommandeAdmin from "./pages/Admin/Conneted/Commande.jsx";
+import ListCatalogue from "./pages/Admin/Conneted/ListCatalogue.jsx";
 
 function App() {
   return (
@@ -23,6 +25,9 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="commande" element={<Commande />} />
+          <Route path="commande-admin" element={<CommandeAdmin />} />
+          <Route path="catalogue-admin" element={<ListCatalogue />} />
+
           <Route path="profil" element={<Profil />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="list-categorie" element={<ListCategorie />} />

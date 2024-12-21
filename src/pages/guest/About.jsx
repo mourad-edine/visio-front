@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./about.css";
+import { useNavigate } from "react-router-dom";
 
 const About = () => {
+  const navigate = useNavigate();
+
+    useEffect(() => {
+      const userId = localStorage.getItem("userId");
+      if (userId) {
+        navigate("/dashboard"); // Redirige vers la page principale si déjà connecté
+      }
+    }, [navigate]);
+  
   return (
     <div className="about-container">
       <div className="about-header">

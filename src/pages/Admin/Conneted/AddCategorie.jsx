@@ -1,8 +1,11 @@
 import React from "react";
 import "./../../auth/login.css";
+import AdminSidebar from "../AdminSidebar";
 
 const AddCategorie = () => {
   return (
+    <div>
+      <AdminSidebar/>
     <div className="register-container">
       <div className="register-card">
         <h2>Créer un compte</h2>
@@ -40,6 +43,7 @@ const AddCategorie = () => {
           </button>
         </form>
       </div>
+    </div>
     </div>
   );
 };

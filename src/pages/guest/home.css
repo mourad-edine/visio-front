@@ -104,3 +104,74 @@
     transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+
+/* modal  */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal {
+    background: white;
+    padding: 20px;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .modal h2 {
+    border-bottom: 5px;
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+    font-size: 18px;
+    opacity: .5;
+    border-bottom: 1px solid #000;
+  }
+  
+  .quantity-input {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+    align-items: center;
+  }
+  
+  .quantity-input label {
+    font-weight: bold;
+    opacity: .5;
+  }
+  
+  .quantity-input input {
+    width: 60px;
+    text-align: center;
+  }
+  
+  .modal-buttons {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .modal-buttons .btn {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .modal-buttons .btn.confirm {
+    background: #28a745;
+    color: white;
+  }
+  
+  .modal-buttons .btn.cancel {
+    background: #dc3545;
+    color: white;
+  }
+  
