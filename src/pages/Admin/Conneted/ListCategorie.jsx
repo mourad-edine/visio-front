@@ -20,7 +20,7 @@ const ListCategorie = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/liste_categorie"
+          "https://visishop.youpihost.fr/back/public/api/liste_categorie"
         );
         setCategories(response.data);
       } catch (error) {
@@ -32,7 +32,7 @@ const ListCategorie = () => {
     const fetchCatalogues = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/liste_catalogue"
+          "https://visishop.youpihost.fr/back/public/api/liste_catalogue"
         );
         setCatalogues(response.data);
       } catch (error) {
@@ -58,7 +58,7 @@ const ListCategorie = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/create_categorie",
+        "https://visishop.youpihost.fr/back/public/api/create_categorie",
         data
       );
             toast.success("produit ajouté avec success.");
@@ -73,7 +73,7 @@ const ListCategorie = () => {
 
   const handleDeleteCategorie = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/categories/${id}`);
+      await axios.delete(`https://visishop.youpihost.fr/back/public/api/categories/${id}`);
       setCategories((prevCategories) =>
         prevCategories.filter((categorie) => categorie.id !== id)
       );

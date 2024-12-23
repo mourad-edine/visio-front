@@ -20,7 +20,7 @@ const Navbar = () => {
 
     const fetchSommePanier = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/somme_panier");
+        const response = await axios.get("https://visishop.youpihost.fr/back/public/api/somme_panier");
         setSommePanier(response.data);
       } catch (error) {
         console.error("Erreur lors de la récupération de la somme du panier:", error);

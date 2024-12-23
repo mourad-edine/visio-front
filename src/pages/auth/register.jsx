@@ -36,7 +36,7 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8000/api/create_user", {
+      const response = await axios.post("https://visishop.youpihost.fr/back/public/api/create_user", {
         name: formData.name,
         email: formData.email,
         password: formData.password,

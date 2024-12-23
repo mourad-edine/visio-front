@@ -109,3 +109,41 @@
 .sidebar::-webkit-scrollbar-thumb:hover {
     background: #e86450;
 }
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: relative; /* Change de fixed à relative */
+        width: 100%; /* Occupe toute la largeur */
+        height: auto; /* Ajuste automatiquement la hauteur */
+        margin-bottom: 20px; /* Ajoute un espacement sous la barre latérale */
+        border-radius: 0; /* Supprime les bordures arrondies */
+        box-shadow: none; /* Supprime l'ombre pour un style plus minimaliste */
+    }
+
+    .sidebar h3 {
+        text-align: left; /* Aligne les titres à gauche pour un style plus compact */
+        font-size: 18px; /* Réduit la taille du texte */
+    }
+
+    .sidebar ul {
+        display: flex;
+        flex-wrap: wrap; /* Permet aux éléments de passer à la ligne */
+        justify-content: space-between; /* Espace les éléments de manière uniforme */
+    }
+
+    .sidebar ul li {
+        flex: 1 1 calc(50% - 10px); /* Chaque élément prend 50% de la largeur moins une marge */
+        margin-bottom: 10px; /* Réduit l'espacement entre les éléments */
+    }
+
+    .sidebar label {
+        font-size: 14px; /* Réduit la taille du texte */
+        padding: 5px; /* Réduit le padding */
+    }
+
+    .sidebar .filter-button {
+        margin-top: 10px; /* Réduit l'espacement au-dessus du bouton */
+        padding: 10px; /* Réduit le padding du bouton */
+        font-size: 14px; /* Réduit la taille du texte */
+    }
+}

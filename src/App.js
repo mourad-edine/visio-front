@@ -1,4 +1,3 @@
-
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import './App.css';
 import Layout from "./pages/Layout.jsx";
@@ -20,6 +19,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
+          {/* Définit Home comme la page par défaut pour "/" */}
+          <Route index element={<Home />} />
           <Route path="home" element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="login" element={<Login />} />
@@ -27,13 +28,11 @@ function App() {
           <Route path="commande" element={<Commande />} />
           <Route path="commande-admin" element={<CommandeAdmin />} />
           <Route path="catalogue-admin" element={<ListCatalogue />} />
-
           <Route path="profil" element={<Profil />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="list-categorie" element={<ListCategorie />} />
           <Route path="list-produit" element={<ListProduit />} />
-          <Route path="details/:id" element={< Detail/>} />
-
+          <Route path="details/:id" element={<Detail />} />
         </Route>
       </Routes>
     </BrowserRouter>

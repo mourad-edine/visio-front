@@ -20,7 +20,7 @@ const ListCatalogue = () => {
     const fetchCatalogues = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/liste_catalogue"
+          "https://visishop.youpihost.fr/back/public/api/liste_catalogue"
         );
         setCatalogues(response.data);
       } catch (error) {
@@ -42,7 +42,7 @@ const ListCatalogue = () => {
   const handleAddCatalogue = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/create_catalogue",
+        "https://visishop.youpihost.fr/back/public/api/create_catalogue",
         newCatalogue
       );
                   toast.success("produit ajouté avec success.");
@@ -57,7 +57,7 @@ const ListCatalogue = () => {
 
   const handleDeleteCatalogue = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/catalogues/${id}`);
+      await axios.delete(`https://visishop.youpihost.fr/back/public/api/catalogues/${id}`);
       setCatalogues((prevCatalogues) =>
         prevCatalogues.filter((catalogue) => catalogue.id !== id)
       );

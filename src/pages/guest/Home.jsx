@@ -19,7 +19,7 @@ const Home = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/produit_all"
+          "https://visishop.youpihost.fr/back/public/api/produit_all"
         );
         setProducts(response.data); // Assurez-vous que response.data est bien un tableau
       } catch (error) {
@@ -54,20 +54,19 @@ const Home = () => {
     const orderData = {
       produit_id: selectedProduct.id,
       quantity,
-      user_id : localStorage.getItem("userId")
-      
+      user_id: localStorage.getItem("userId"),
     };
 
     try {
-      await axios.post("http://localhost:8000/api/create_panier", orderData);
-      toast.success('ajouté au panier')
+      await axios.post("https://visishop.youpihost.fr/back/public/api/create_panier", orderData);
+      toast.success("ajouté au panier");
       console.log(orderData);
       handleModalClose();
     } catch (error) {
       console.error("Erreur lors de l'envoi de la commande :", error);
       console.log("data :", orderData);
 
-      toast.success('une erreur est survenur , veuiller réessayer ! ')
+      toast.success("une erreur est survenur , veuiller réessayer ! ");
     }
   };
 
@@ -106,8 +105,11 @@ const Home = () => {
                 >
                   <FaInfoCircle /> Détails
                 </button>
-                <button className="btn video-call boto">
-                  <FaVideo className="icone" />
+                <button className="btn video-call boto" onClick={() => navigate(`/details/${product.id}`)}>
+                  <FaVideo
+                    className="icone"
+                    
+                  />
                 </button>
               </div>
             </div>

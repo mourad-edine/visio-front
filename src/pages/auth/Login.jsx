@@ -30,7 +30,7 @@ const Login = () => {
     e.preventDefault();
   
     try {
-      const response = await axios.post("http://localhost:8000/api/login", formData);
+      const response = await axios.post("https://visishop.youpihost.fr/back/public/api/login", formData);
       console.log(response);
       
       if (response.data.result === "ok") {

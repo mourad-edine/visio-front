@@ -23,8 +23,8 @@ const ListProduit = () => {
     const fetchData = async () => {
       try {
         const [produitRes, categorieRes] = await Promise.all([
-          axios.get("http://localhost:8000/api/produit_all"),
-          axios.get("http://localhost:8000/api/liste_categorie"),
+          axios.get("https://visishop.youpihost.fr/back/public/api/produit_all"),
+          axios.get("https://visishop.youpihost.fr/back/public/api/liste_categorie"),
         ]);
         setProduits(produitRes.data);
         setCategories(categorieRes.data);
@@ -46,7 +46,7 @@ const ListProduit = () => {
   const handleAddProduit = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/create_produit",
+        "https://visishop.youpihost.fr/back/public/api/create_produit",
         newProduit
       );
       toast.success("produit ajouté avec success.");
@@ -68,7 +68,7 @@ const ListProduit = () => {
 
   const handleDeleteProduit = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/produits/${id}`);
+      await axios.delete(`https://visishop.youpihost.fr/back/public/api/produits/${id}`);
       setProduits((prevProduits) =>
         prevProduits.filter((produit) => produit.id !== id)
       );
