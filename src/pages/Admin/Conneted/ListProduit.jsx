@@ -16,6 +16,7 @@ const ListProduit = () => {
     quantite: "",
     categorie_id: "",
     user_id: localStorage.getItem("userId"),
+    image: null, // Nouveau champ pour l'image
   });
 
   useEffect(() => {
@@ -23,8 +24,8 @@ const ListProduit = () => {
     const fetchData = async () => {
       try {
         const [produitRes, categorieRes] = await Promise.all([
-          axios.get("https://visishop.youpihost.fr/back/public/api/produit_all"),
-          axios.get("https://visishop.youpihost.fr/back/public/api/liste_categorie"),
+          axios.get("http://localhost/visio/back/public/api/produit_all"),
+          axios.get("http://localhost/visio/back/public/api/liste_categorie"),
         ]);
         setProduits(produitRes.data);
         setCategories(categorieRes.data);
@@ -43,13 +44,27 @@ const ListProduit = () => {
     }));
   };
 
+  const handleFileChange = (e) => {
+    setNewProduit((prevState) => ({
+      ...prevState,
+      image: e.target.files[0], // Gérer l'image
+    }));
+  };
+
   const handleAddProduit = async () => {
     try {
+      const formData = new FormData();
+      Object.keys(newProduit).forEach((key) => {
+        formData.append(key, newProduit[key]);
+      });
+
       const response = await axios.post(
-        "https://visishop.youpihost.fr/back/public/api/create_produit",
-        newProduit
+        "http://localhost/visio/back/public/api/create_produit",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
-      toast.success("produit ajouté avec success.");
+
+      toast.success("Produit ajouté avec succès.");
       setProduits((prevProduits) => [...prevProduits, response.data]);
       setShowModal(false);
       setNewProduit({
@@ -59,6 +74,7 @@ const ListProduit = () => {
         quantite: "",
         categorie_id: "",
         user_id: localStorage.getItem("userId"),
+        image: null,
       });
     } catch (error) {
       console.log(newProduit);
@@ -68,7 +84,9 @@ const ListProduit = () => {
 
   const handleDeleteProduit = async (id) => {
     try {
-      await axios.delete(`https://visishop.youpihost.fr/back/public/api/produits/${id}`);
+      await axios.delete(
+        `http://localhost/visio/back/public/api/produits/${id}`
+      );
       setProduits((prevProduits) =>
         prevProduits.filter((produit) => produit.id !== id)
       );
@@ -96,6 +114,7 @@ const ListProduit = () => {
               <th>Prix</th>
               <th>Quantité</th>
               <th>Catégorie</th>
+              <th>Image</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -108,6 +127,17 @@ const ListProduit = () => {
                 <td>{produit.prix} €</td>
                 <td>{produit.quantite}</td>
                 <td>{produit.categorie_id}</td>
+                <td>
+                  {produit.image ? (
+                    <img
+                      src={`http://localhost/visio/back/public/storage/${produit.image}`}
+                      alt={produit.nom_produit}
+                      style={{ width: "50px", height: "50px" }}
+                    />
+                  ) : (
+                    "Aucune image"
+                  )}
+                </td>
                 <td>
                   <button className="btn btn-edit">Modifier</button>
                   <button
@@ -129,48 +159,49 @@ const ListProduit = () => {
             <h2>Ajouter un produit</h2>
             <div className="modal-content">
               <div className="form-group">
-                <label>Nom du produit :</label>
                 <input
                   type="text"
                   name="nom_produit"
                   value={newProduit.nom_produit}
                   onChange={handleInputChange}
+                  placeholder="Nom du produit"
                 />
               </div>
               <div className="form-group">
-                <label>Description :</label>
                 <textarea
                   name="descriptions"
                   value={newProduit.descriptions}
                   onChange={handleInputChange}
+                  placeholder="Description"
                 />
               </div>
               <div className="form-group">
-                <label>Prix :</label>
                 <input
                   type="number"
                   name="prix"
                   value={newProduit.prix}
                   onChange={handleInputChange}
+                  placeholder="Prix"
                 />
               </div>
               <div className="form-group">
-                <label>Quantité :</label>
                 <input
                   type="number"
                   name="quantite"
                   value={newProduit.quantite}
                   onChange={handleInputChange}
+                  placeholder="Quantité"
                 />
               </div>
               <div className="form-group">
-                <label>Catégorie :</label>
                 <select
                   name="categorie_id"
                   value={newProduit.categorie_id}
                   onChange={handleInputChange}
                 >
-                  <option value="">Sélectionnez une catégorie</option>
+                  <option value="" disabled>
+                    Sélectionnez une catégorie
+                  </option>
                   {categories.map((categorie) => (
                     <option key={categorie.id} value={categorie.id}>
                       {categorie.nom_categorie}
@@ -178,6 +209,15 @@ const ListProduit = () => {
                   ))}
                 </select>
               </div>
+              <div className="form-group">
+                <input
+                  type="file"
+                  name="image"
+                  onChange={handleFileChange}
+                  aria-label="Image"
+                />
+              </div>
+              
             </div>
             <div className="modal-buttons">
               <button className="btn btn-confirm" onClick={handleAddProduit}>

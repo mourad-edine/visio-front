@@ -14,13 +14,14 @@ const ListCategorie = () => {
     description: "",
     catalogue_id: "",
   });
+  const [photo, setPhoto] = useState(null);
 
   useEffect(() => {
     // Charger les catégories depuis l'API
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "https://visishop.youpihost.fr/back/public/api/liste_categorie"
+          "http://localhost/visio/back/public/api/liste_categorie"
         );
         setCategories(response.data);
       } catch (error) {
@@ -32,7 +33,7 @@ const ListCategorie = () => {
     const fetchCatalogues = async () => {
       try {
         const response = await axios.get(
-          "https://visishop.youpihost.fr/back/public/api/liste_catalogue"
+          "http://localhost/visio/back/public/api/liste_catalogue"
         );
         setCatalogues(response.data);
       } catch (error) {
@@ -52,28 +53,47 @@ const ListCategorie = () => {
     }));
   };
 
+  const handlePhotoChange = (e) => {
+    setPhoto(e.target.files[0]);
+  };
+
   const handleAddCategorie = async () => {
     const user_id = localStorage.getItem("userId");
-    const data = { ...newCategorie, user_id };
+    const formData = new FormData();
+    formData.append("nom_categorie", newCategorie.nom_categorie);
+    formData.append("description", newCategorie.description);
+    formData.append("catalogue_id", newCategorie.catalogue_id);
+    formData.append("user_id", user_id);
+    if (photo) {
+      formData.append("image", photo);
+    }
 
     try {
       const response = await axios.post(
-        "https://visishop.youpihost.fr/back/public/api/create_categorie",
-        data
+        "http://localhost/visio/back/public/api/create_categorie",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
-            toast.success("produit ajouté avec success.");
-      
+      toast.success("Catégorie ajoutée avec succès.");
       setCategories((prevCategories) => [...prevCategories, response.data]);
       setShowModal(false);
       setNewCategorie({ nom_categorie: "", description: "", catalogue_id: "" });
+      setPhoto(null);
     } catch (error) {
       console.error("Erreur lors de l'ajout de la catégorie:", error);
+      toast.error("Erreur lors de l'ajout de la catégorie.");
     }
   };
 
   const handleDeleteCategorie = async (id) => {
     try {
-      await axios.delete(`https://visishop.youpihost.fr/back/public/api/categories/${id}`);
+      await axios.delete(
+        `https://visishop.youpihost.fr/back/public/api/categories/${id}`
+      );
       setCategories((prevCategories) =>
         prevCategories.filter((categorie) => categorie.id !== id)
       );
@@ -99,6 +119,7 @@ const ListCategorie = () => {
               <th>Nom</th>
               <th>Description</th>
               <th>Catalogue</th>
+              <th>Photo</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -109,6 +130,19 @@ const ListCategorie = () => {
                 <td>{categorie.nom_categorie}</td>
                 <td>{categorie.descriptions}</td>
                 <td>{categorie.catalogue_id}</td>
+                <td>
+                  {categorie.photos && (
+                    <img
+                      src={`http://localhost/visio/back/public/storage/${categorie.photos}`}
+                      alt={categorie.nom_categorie}
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        objectFit: "cover",
+                      }}
+                    />
+                  )}
+                </td>
                 <td>
                   <button className="btn btn-edit">Modifier</button>
                   <button
@@ -130,36 +164,45 @@ const ListCategorie = () => {
             <h2>Ajouter une catégorie</h2>
             <div className="modal-content">
               <div className="form-group">
-                <label>Nom :</label>
                 <input
                   type="text"
                   name="nom_categorie"
                   value={newCategorie.nom_categorie}
                   onChange={handleInputChange}
+                  placeholder="Nom"
                 />
               </div>
               <div className="form-group">
-                <label>Description :</label>
                 <textarea
                   name="description"
                   value={newCategorie.description}
                   onChange={handleInputChange}
+                  placeholder="Description"
                 />
               </div>
               <div className="form-group">
-                <label>Catalogue :</label>
                 <select
                   name="catalogue_id"
                   value={newCategorie.catalogue_id}
                   onChange={handleInputChange}
                 >
-                  <option value="">Sélectionner un catalogue</option>
+                  <option value="" disabled>
+                    Sélectionner un catalogue
+                  </option>
                   {catalogues.map((catalogue) => (
                     <option key={catalogue.id} value={catalogue.id}>
                       {catalogue.nom_catalogue}
                     </option>
                   ))}
                 </select>
+              </div>
+              <div className="form-group">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoChange}
+                  aria-label="Photo"
+                />
               </div>
             </div>
             <div className="modal-buttons">

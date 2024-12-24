@@ -94,7 +94,7 @@ const Navbar = () => {
                   <NavLink to="/profil">profil</NavLink>
                 </li>
                 <li className="nav-link">
-                  <button onClick={handleLogout}>Logout</button>
+                  <button className="btn logout" onClick={handleLogout}>Logout</button>
                 </li>
                </>
               )}

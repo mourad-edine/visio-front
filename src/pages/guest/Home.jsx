@@ -19,7 +19,7 @@ const Home = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "https://visishop.youpihost.fr/back/public/api/produit_all"
+          "http://localhost/visio/back/public/api/produit_all"
         );
         setProducts(response.data); // Assurez-vous que response.data est bien un tableau
       } catch (error) {
@@ -84,7 +84,7 @@ const Home = () => {
               <img
                 src={
                   product.image && product.image !== "pas d'image"
-                    ? product.image
+                    ? `http://localhost/visio/back/public/storage/${product.image}`
                     : image
                 }
                 alt={product.nom_produit || "Produit"}

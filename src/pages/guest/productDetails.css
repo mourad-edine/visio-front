@@ -7,11 +7,24 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   font-family: 'Arial', sans-serif;
 }
+.product-media {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.product-video {
+  max-width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
 
 .product-title {
   font-size: 18px;
   margin-bottom: 20px;
   color: #333;
+  text-transform: uppercase;
 }
 
 .product-images {
@@ -24,7 +37,7 @@
 .product-image {
   width: 300px;
   height: auto;
-  border-radius: 8px;
+  border-radius: 1px;
   border: 1px solid #ddd;
 }
 
@@ -45,6 +58,7 @@
   color: #444;
   margin-top: 30px;
   margin-bottom: 10px;
+  text-transform: uppercase;
 }
 
 .product-features,
@@ -95,7 +109,7 @@
 .product-image {
   max-width: 100%;
   height: auto;
-  border-radius: 8px;
+  border-radius: 1px;
 }
 
 .product-description {

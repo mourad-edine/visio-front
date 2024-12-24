@@ -14,13 +14,14 @@ const ListCatalogue = () => {
     description: "",
     reference: "",
   });
+  const [photo, setPhoto] = useState(null);
 
   useEffect(() => {
     // Charger les catalogues depuis l'API
     const fetchCatalogues = async () => {
       try {
         const response = await axios.get(
-          "https://visishop.youpihost.fr/back/public/api/liste_catalogue"
+          "http://localhost/visio/back/public/api/liste_catalogue"
         );
         setCatalogues(response.data);
       } catch (error) {
@@ -39,25 +40,45 @@ const ListCatalogue = () => {
     }));
   };
 
+  const handlePhotoChange = (e) => {
+    setPhoto(e.target.files[0]);
+  };
+
   const handleAddCatalogue = async () => {
     try {
+      const formData = new FormData();
+      formData.append("nom", newCatalogue.nom);
+      formData.append("description", newCatalogue.description);
+      formData.append("reference", newCatalogue.reference);
+      if (photo) {
+        formData.append("image", photo); // Nom corrigé pour correspondre au backend
+      }
+
       const response = await axios.post(
-        "https://visishop.youpihost.fr/back/public/api/create_catalogue",
-        newCatalogue
+        "http://localhost/visio/back/public/api/create_catalogue",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
-                  toast.success("produit ajouté avec success.");
-      
+      toast.success("Produit ajouté avec succès.");
       setCatalogues((prevCatalogues) => [...prevCatalogues, response.data]);
       setShowModal(false);
       setNewCatalogue({ nom: "", description: "", reference: "" });
+      setPhoto(null);
     } catch (error) {
-      console.error("Erreur lors de l'ajout du catalogue:", error);
+      console.error("Erreur lors de l'ajout du catalogue :", error);
+      toast.error("Erreur lors de l'ajout du produit.");
     }
   };
 
   const handleDeleteCatalogue = async (id) => {
     try {
-      await axios.delete(`https://visishop.youpihost.fr/back/public/api/catalogues/${id}`);
+      await axios.delete(
+        `https://visishop.youpihost.fr/back/public/api/catalogues/${id}`
+      );
       setCatalogues((prevCatalogues) =>
         prevCatalogues.filter((catalogue) => catalogue.id !== id)
       );
@@ -85,6 +106,7 @@ const ListCatalogue = () => {
               <th>Nom</th>
               <th>Description</th>
               <th>Référence</th>
+              <th>Photo</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -94,7 +116,21 @@ const ListCatalogue = () => {
                 <td>{catalogue.id}</td>
                 <td>{catalogue.nom_catalogue}</td>
                 <td>{catalogue.descriptions}</td>
-                <td>{catalogue.reference}</td>
+                <td>--{catalogue.reference}--</td>
+                <td>
+                  {catalogue.photos && (
+                    <img
+                      src={`http://localhost/visio/back/public/storage/${catalogue.photos}`}
+                      alt={catalogue.nom_catalogue}
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        objectFit: "cover",
+                      }}
+                    />
+                  )}
+                </td>
+
                 <td>
                   <button className="btn btn-edit">Modifier</button>
                   <button
@@ -117,29 +153,36 @@ const ListCatalogue = () => {
             <h2>Ajouter un catalogue</h2>
             <div className="modal-content">
               <div className="form-group">
-                <label>Nom :</label>
                 <input
                   type="text"
                   name="nom"
-                  value={newCatalogue.nom_produit}
+                  value={newCatalogue.nom}
                   onChange={handleInputChange}
+                  placeholder="Nom"
                 />
               </div>
               <div className="form-group">
-                <label>Description :</label>
                 <textarea
                   name="description"
                   value={newCatalogue.description}
                   onChange={handleInputChange}
+                  placeholder="Description"
                 />
               </div>
               <div className="form-group">
-                <label>Référence :</label>
                 <input
                   type="text"
                   name="reference"
                   value={newCatalogue.reference}
                   onChange={handleInputChange}
+                  placeholder="Référence"
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  type="file"
+                  onChange={handlePhotoChange}
+                  aria-label="Photo"
                 />
               </div>
             </div>
